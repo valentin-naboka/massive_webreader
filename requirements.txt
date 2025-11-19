@@ -1,0 +1,5 @@
+llama-index
+python-dotenv
+llama-index-readers-web
+playwright
+beautifulsoup4
