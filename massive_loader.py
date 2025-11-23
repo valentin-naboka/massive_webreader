@@ -7,9 +7,9 @@ from bs4 import BeautifulSoup
 address = "https://network.joinmassive.com:65535"
 
 class MassiveWebReader(BaseReader):
-    """Playwright web page reader.
+    """Massive web page reader.
 
-    Reads pages by rendering them with Playwright.
+    Reads pages by rendering them with Playwright using Massive proxy via configurable geolocation.
     """
 
     def __init__(self, headless: bool = True, creds: Optional[dict] = None, params: Optional[dict] = None):
@@ -43,10 +43,13 @@ class MassiveWebReader(BaseReader):
             
             # Create a context with a real user agent and other human-like properties
             context = browser.new_context(
+                # TODO: revise and refine
                 user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
                 viewport={"width": 1280, "height": 720},
+                # TODO: align with requested country
                 locale="en-US",
                 timezone_id="America/New_York",
+
                 permissions=["geolocation"],
                 extra_http_headers={
                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -76,7 +79,7 @@ class MassiveWebReader(BaseReader):
                     print(f"Navigating to {url}...")
                     page.goto(url, wait_until="domcontentloaded")
                     # Wait a bit for dynamic content to settle
-                    page.wait_for_timeout(2000) 
+                    page.wait_for_timeout(5000) 
                     
                     content = page.content()
                     
