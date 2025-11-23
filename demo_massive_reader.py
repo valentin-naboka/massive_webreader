@@ -2,7 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 from llama_index.core import SummaryIndex
-from massive_loader import MassiveWebReader
+from massive_reader import MassiveWebReader
 
 # Load environment variables
 load_dotenv()
@@ -32,14 +32,14 @@ def main():
     for country in countries:
         print(f"\n--- Processing {country} ---")
         
-        # Pass country parameter to the loader
-        # The loader will handle locale, timezone, and proxy username modification
+        # Pass country parameter to the reader
+        # The reader will handle locale, timezone, and proxy username modification
         params = {"country": country}
         
         try:
             print(f"Fetching content from {url}...")
-            loader = MassiveWebReader(headless=True, creds=creds, params=params)
-            documents = loader.load_data([url])
+            reader = MassiveWebReader(headless=True, creds=creds, params=params)
+            documents = reader.load_data([url])
             
             print(f"Creating index for {country}...")
             index = SummaryIndex.from_documents(documents)
